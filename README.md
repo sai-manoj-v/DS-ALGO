@@ -1,2 +1,2 @@
 # Data-Structures
-Code for all the data structures in Java and Python
+Code for all major data structures in Java and Python
