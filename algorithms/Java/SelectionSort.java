@@ -1,5 +1,6 @@
 package algorithms.Java;
 
+//Picking each element in list and comparing with others to swap places
 public class SelectionSort {
 
     public static void selectionSort(int[] elements) {

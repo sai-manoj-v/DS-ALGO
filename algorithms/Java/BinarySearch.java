@@ -1,5 +1,6 @@
 package algorithms.Java;
 
+//Slice list to half recursively to compare middle item for the required item
 class BinarySearch {
 
     public static int findElement(int number, int[] elements) {
