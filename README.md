@@ -1,2 +1,2 @@
 # Data-Structures
-Code for all major data structures in Java and Python
+Includes code for data structures, algorithms, and problems from leet code. 
