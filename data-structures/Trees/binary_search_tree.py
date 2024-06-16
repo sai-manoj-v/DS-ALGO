@@ -1,6 +1,4 @@
-from binay_tree import BinaryTree
-from node import Node
-
+from binary_tree import BinaryTree
 
 # Binary Search Tree is just a sorted Binary Tree
 class BinarySearchTree(BinaryTree):
@@ -25,6 +23,32 @@ class BinarySearchTree(BinaryTree):
                     self.addRight(value, head)
                     return
                 head = head.right
+
+    def delete(self, value):
+        if self.root is None:
+            return self.root
+        return self._delete_helper(self.root, value)
+
+    def _delete_helper(self, node, value):
+        if value < node.element:
+            node.left = self._delete_helper(node.left, value)
+        elif value > node.element:
+            node.right = self._delete_helper(node.right, value)
+        else:
+            if node.left is None:
+                return node.right
+            elif node.right is None:
+                return node.left
+            node.element = self._min_inorder(node.right)
+            node.right = self._delete_helper(node.right, node.element)
+        return node
+
+    def _min_inorder(self, node):
+        min_value = node.element
+        while node.left:
+            min_value = node.left.element
+            node = node.left
+        return min_value
 
     # Search traversal with O(h) where h is height of the tree.
     def search(self, value):
@@ -52,6 +76,7 @@ test.insert(5)
 test.insert(14)
 test.insert(12)
 test.insert(16)
+
 print("In Order")
 test.traverse_inorder()
 print("\n\nPre Order")
@@ -60,4 +85,11 @@ print("\n\nPost Order")
 test.traverse_postorder()
 print("\n\nLevel Order")
 test.traverse_level_order()
-#print(test.search(10).parent.element)
+
+test.delete(14)
+print("\n\nPre Order")
+test.traverse_preorder()
+
+print("\n\n" + str(test.is_perfect_tree()))
+print("\n\n" + str(test.is_full_tree()))
+# print(test.search(10).parent.element)

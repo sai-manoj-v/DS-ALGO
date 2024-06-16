@@ -31,6 +31,14 @@ class BinaryTree(Tree):
             c += 1
         return c
 
+    def node_count(self):
+        self._count_children(self.root)
+
+    def _count_children(self, node):
+        if node is None:
+            return 0
+        return 1 + self._count_children(node.left) + self._count_children(node.right)
+
     def addRoot(self, value):
         if self.root is not None:
             raise ValueError('Root already exists')
@@ -51,6 +59,72 @@ class BinaryTree(Tree):
         else:
             position.right = Node(value, position)
             self.length += 1
+
+    # Tree Properties
+    # Full Tree - Each node only has 0 or 2 child nodes
+    def is_full_tree(self):
+        return self._check_if_full_tree(self.root)
+
+    def _check_if_full_tree(self, node):
+        if node is None:
+            return True
+
+        if node.left is None and node.right is None:
+            return True
+
+        if node.left is not None and node.right is not None:
+            return self._check_if_full_tree(node.left) and self._check_if_full_tree(node.right)
+
+        return False
+
+    # Perfect Binary Tree - Each internal node has a degree of 2 (2 child) and all the child are at same level
+    def is_perfect_tree(self):
+        d = self.left_depth(self.root)
+        return self._check_if_perfect_tree(self.root, d)
+
+    def _check_if_perfect_tree(self, node, d, level = 0):
+        if node is None:
+            return True
+
+        if node.left is None and node.right is None:
+            return d == level+1
+
+        if node.left is None or node.right is None:
+            return False
+
+        return self._check_if_perfect_tree(node.left, d, level+1) and self._check_if_perfect_tree(node.right, d, level+1)
+
+    # Complete Binary Tree - All leaves are at same level, filled from left to right
+    def is_complete_tree(self):
+        self._check_if_complete(self.root, self.node_count())
+
+    def _check_if_complete(self, node, node_count, index = 0):
+        if node is None:
+            return True
+
+        if index >= node_count:
+            return False
+
+        return self._check_if_complete(node.left, node_count, 2*index+1) and self._check_if_complete(node.right, node_count, 2*index+2)
+
+    # Balanced Tree - Height of any left and right sub-tree shouldn't differ by one
+    # Reference - https://www.youtube.com/watch?v=LU4fGD-fgJQ&ab_channel=BackToBackSWE
+    def is_balanced(self):
+        return self._check_if_balanced(self.root)
+
+    def _check_if_balanced(self, node):
+        if node is None:
+            return True, 0
+
+        left = self._check_if_balanced(node.left)
+        right = self._check_if_balanced(node.right)
+
+        height = max(left[1], right[1]) + 1
+
+        if left[0] and right[0] and abs(left[1] - right[1]) <= 1:
+            return True, height
+        else:
+            return False, height
 
     # Traversals
     # Depth First Traversals - Explore each branch as far as possible before back tracking
@@ -122,3 +196,6 @@ class BinaryTree(Tree):
                 queue.append(current.left)
             if current.right:
                 queue.append(current.right)
+
+
+

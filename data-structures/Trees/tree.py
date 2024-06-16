@@ -22,10 +22,17 @@ class Tree:
             'Method not implemented - must be implemented by subclass')
 
     def depth(self, n):
-        if self.is_root():
+        if self.is_root(n):
             return 0
         else:
             return 1 + self.depth(self.parent(n))
+
+    def left_depth(self, n):
+        d = 0
+        while n:
+            d += 1
+            n = n.left
+        return d
 
     def height(self, n):
         if self.is_leaf(n):
